@@ -5,19 +5,41 @@
  */
 package Vistas;
 
+import Modelos.Usuario;
+import java.util.LinkedList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import Controladores.ControladorBoleto;
+import Modelos.Boleto;
 /**
  *
  * @author Marcela Alzate
  */
 public class InterfazCliente extends javax.swing.JFrame {
-
+    ControladorBoleto miControladorBoleto;
     /**
      * Creates new form InterfazCliente
      */
     public InterfazCliente() {
         initComponents();
+        String urlServidor="http://127.0.0.1:8080";
+        this.miControladorBoleto=new ControladorBoleto(urlServidor, "/boletos");
     }
-
+    public void actualizarTablaBoletos(){
+        String nombresColumnas[] = {"Nombre usuario", "Tipo", "Valor", "Función","Silla"};
+        DefaultTableModel miModelo = new DefaultTableModel(null, nombresColumnas);
+        this.tbBoletos.setModel(miModelo);
+        LinkedList<Boleto> boletos=this.miControladorBoleto.listar();
+        for (Boleto actual:boletos) {
+            String fila[] = new String[nombresColumnas.length];
+            fila[0] = actual.getCedula();
+            fila[1] = actual.getNombre();
+            fila[2] = actual.getApellido();
+            fila[3] = actual.getEmail();            
+            miModelo.addRow(fila);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,7 +60,7 @@ public class InterfazCliente extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         ComboTipo = new javax.swing.JComboBox<>();
         txtValorBoleto = new javax.swing.JTextField();
-        txtIdBoleto1 = new javax.swing.JTextField();
+        txtIdBoleto = new javax.swing.JTextField();
         txtCedulaUsuario = new javax.swing.JTextField();
         ComboFuncion = new javax.swing.JComboBox<>();
         ComboSilla = new javax.swing.JComboBox<>();
@@ -47,7 +69,7 @@ public class InterfazCliente extends javax.swing.JFrame {
         btnEditarBoleto = new javax.swing.JButton();
         btnEliminarBoleto = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbBoletos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,11 +90,23 @@ public class InterfazCliente extends javax.swing.JFrame {
 
         ComboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Niño", "Adulto" }));
 
+        txtIdBoleto.setEnabled(false);
+
         ComboFuncion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ComboFuncion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComboFuncionActionPerformed(evt);
+            }
+        });
 
         ComboSilla.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnCrearBoleto.setText("Crear");
+        btnCrearBoleto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearBoletoActionPerformed(evt);
+            }
+        });
 
         btnBuscarBoleto.setText("Buscar");
 
@@ -80,7 +114,7 @@ public class InterfazCliente extends javax.swing.JFrame {
 
         btnEliminarBoleto.setText("Eliminar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbBoletos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -91,7 +125,7 @@ public class InterfazCliente extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbBoletos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -106,11 +140,13 @@ public class InterfazCliente extends javax.swing.JFrame {
                 .addComponent(btnEditarBoleto)
                 .addGap(18, 18, 18)
                 .addComponent(btnEliminarBoleto)
-                .addGap(0, 323, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 152, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -122,7 +158,7 @@ public class InterfazCliente extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtValorBoleto)
                                     .addComponent(ComboFuncion, 0, 158, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addComponent(jLabel5)
@@ -135,8 +171,8 @@ public class InterfazCliente extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(139, 139, 139)
-                    .addComponent(txtIdBoleto1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(376, Short.MAX_VALUE)))
+                    .addComponent(txtIdBoleto, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(472, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,12 +200,13 @@ public class InterfazCliente extends javax.swing.JFrame {
                     .addComponent(btnBuscarBoleto)
                     .addComponent(btnEditarBoleto)
                     .addComponent(btnEliminarBoleto))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(41, 41, 41)
-                    .addComponent(txtIdBoleto1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdBoleto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(573, Short.MAX_VALUE)))
         );
 
@@ -200,6 +237,26 @@ public class InterfazCliente extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ComboFuncionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboFuncionActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_ComboFuncionActionPerformed
+
+    private void btnCrearBoletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearBoletoActionPerformed
+        // TODO add your handling code here:
+        double valor = Double.parseDouble(this.txtValorBoleto.getText());
+        String tipo = this.ComboTipo.getSelectedItem().toString();
+        Boleto nuevoBoleto=new Boleto(valor, tipo);
+        nuevoBoleto = this.miControladorBoleto.crear(nuevoBoleto);
+        
+        if(nuevoBoleto==null){
+            JOptionPane.showMessageDialog(null, "Problemas al crear el boleto");
+        }else{
+            JOptionPane.showMessageDialog(null, "Boleto creado exitosamente");
+            this.txtIdBoleto.setText(nuevoBoleto.getId());
+        }  
+    }//GEN-LAST:event_btnCrearBoletoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -254,9 +311,9 @@ public class InterfazCliente extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbBoletos;
     private javax.swing.JTextField txtCedulaUsuario;
-    private javax.swing.JTextField txtIdBoleto1;
+    private javax.swing.JTextField txtIdBoleto;
     private javax.swing.JTextField txtValorBoleto;
     // End of variables declaration//GEN-END:variables
 }

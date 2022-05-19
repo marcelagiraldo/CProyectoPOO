@@ -10,17 +10,13 @@ package Modelos;
  * @author Marcela Alzate
  */
 public class Silla {
-    String _id;
+    private String _id;
     String letra;
     int numero;
 
     public Silla(String letra, int numero) {
         this.letra = letra;
         this.numero = numero;
-    }
-
-    public String get_id() {
-        return _id;
     }
 
     public String getLetra() {

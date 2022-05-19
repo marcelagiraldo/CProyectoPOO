@@ -81,12 +81,15 @@
                       <Component id="btnEditarBoleto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnEliminarBoleto" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="323" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane1" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jScrollPane1" min="-2" pref="595" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="152" max="32767" attributes="0"/>
+                          </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -102,7 +105,7 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="211" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
@@ -120,8 +123,8 @@
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
-                          <Component id="txtIdBoleto1" min="-2" pref="158" max="-2" attributes="0"/>
-                          <EmptySpace pref="376" max="32767" attributes="0"/>
+                          <Component id="txtIdBoleto" min="-2" pref="158" max="-2" attributes="0"/>
+                          <EmptySpace pref="472" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -156,13 +159,14 @@
                           <Component id="btnEditarBoleto" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnEliminarBoleto" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="55" max="32767" attributes="0"/>
+                      <EmptySpace pref="17" max="32767" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="385" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-                          <Component id="txtIdBoleto1" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtIdBoleto" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="573" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -215,7 +219,10 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtValorBoleto">
             </Component>
-            <Component class="javax.swing.JTextField" name="txtIdBoleto1">
+            <Component class="javax.swing.JTextField" name="txtIdBoleto">
+              <Properties>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtCedulaUsuario">
             </Component>
@@ -230,6 +237,9 @@
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ComboFuncionActionPerformed"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
@@ -253,6 +263,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Crear"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrearBoletoActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnBuscarBoleto">
               <Properties>
@@ -276,7 +289,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="jTable1">
+                <Component class="javax.swing.JTable" name="tbBoletos">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="4" rowCount="4">
