@@ -7,6 +7,8 @@ package Controladores;
 import Modelos.Boleto;
 import Modelos.Usuario;
 import Servicios.Servicio;
+import java.util.LinkedList;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 /**
@@ -28,29 +30,50 @@ public class ControladorUsuario {
             String resultado = this.miServicio.GET(endPoint);
             respuesta = procesarJSON(resultado);
         } catch (Exception e) {
-            System.out.println("Error " + e);
+            System.out.println("Error al buscar" + e);
             respuesta = null;
         }
         return respuesta;
     }
-    public Boleto reArmar(JSONObject objetoJS){
-        Boleto nuevoBoleto = new Boleto();
-        nuevoBoleto.setId((String)objetoJS.get("_id"));
-        nuevoBoleto.setValor((Double)objetoJS.get("valor"));
-        nuevoBoleto.setTipo((String)objetoJS.get("tipo"));
-        return nuevoBoleto;
+    public LinkedList<Usuario>listar(){
+        LinkedList<Usuario> respuesta = new LinkedList<>();
+        try {
+            String endPoint = this.subUrl;
+            String resultado = this.miServicio.GET(endPoint);
+            JSONParser parser = new JSONParser();
+            JSONArray usuariosJS = (JSONArray) parser.parse(resultado);
+            for (Object actual : usuariosJS) {
+                JSONObject usuarioJS= (JSONObject) actual;
+                Usuario nuevoUsuario=new Usuario();
+                nuevoUsuario=reArmar(usuarioJS);
+                respuesta.add(nuevoUsuario);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al listar " + e);
+            respuesta = null;
+        }
+        return respuesta;
     }
-    public Boleto procesarJSON(String jsonString){
-        Boleto nuevoBoleto = new Boleto();
+    public Usuario reArmar(JSONObject objetoJS){
+        Usuario nuevoUsuario = new Usuario();
+        nuevoUsuario.setId((String)objetoJS.get("_id"));
+        nuevoUsuario.setCedula((String)objetoJS.get("cedula"));
+        nuevoUsuario.setNombre((String)objetoJS.get("nombre"));
+        nuevoUsuario.setEmail((String)objetoJS.get("email"));
+        nuevoUsuario.setAioNacimiento((Long)objetoJS.get("aioNacimiento"));
+        return nuevoUsuario;
+    }
+    public Usuario procesarJSON(String jsonString){
+        Usuario nuevoUsuario = new Usuario();
         try {
             JSONParser parser=new JSONParser();
-            JSONObject boletoJS=(JSONObject)parser.parse(jsonString);
-            nuevoBoleto=reArmar(boletoJS);
+            JSONObject usuarioJS=(JSONObject)parser.parse(jsonString);
+            nuevoUsuario=reArmar(usuarioJS);
         } catch (Exception e) {
-            System.out.println("Error: "+e);
-            nuevoBoleto = null;
+            System.out.println("Error al procesar: "+e);
+            nuevoUsuario = null;
         }
-        return nuevoBoleto;
+        return nuevoUsuario;
     }
     
     

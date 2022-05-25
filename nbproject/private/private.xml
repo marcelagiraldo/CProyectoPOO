@@ -5,7 +5,7 @@
             <url>src/Controladores/ControladorUsuario.java</url>
             <bookmark id="1">
                 <name/>
-                <line>57</line>
+                <line>80</line>
                 <key/>
             </bookmark>
         </file>
@@ -14,8 +14,10 @@
         <group>
             <file>file:/C:/Users/Marcela%20Alzate/Documents/III%20semestre/POO/ProyectoPOO/ClienteProyecto/src/Controladores/ControladorBoleto.java</file>
             <file>file:/C:/Users/Marcela%20Alzate/Documents/III%20semestre/POO/ProyectoPOO/ClienteProyecto/src/Modelos/Boleto.java</file>
+            <file>file:/C:/Users/Marcela%20Alzate/Documents/III%20semestre/POO/ProyectoPOO/ClienteProyecto/src/Controladores/ControladorFuncion.java</file>
             <file>file:/C:/Users/Marcela%20Alzate/Documents/III%20semestre/POO/ProyectoPOO/ClienteProyecto/src/Modelos/Sala.java</file>
             <file>file:/C:/Users/Marcela%20Alzate/Documents/III%20semestre/POO/ProyectoPOO/ClienteProyecto/src/Vistas/InterfazCliente.java</file>
+            <file>file:/C:/Users/Marcela%20Alzate/Documents/III%20semestre/POO/ProyectoPOO/ClienteProyecto/src/Controladores/ControladorSilla.java</file>
             <file>file:/C:/Users/Marcela%20Alzate/Documents/III%20semestre/POO/ProyectoPOO/ClienteProyecto/src/Modelos/Usuario.java</file>
             <file>file:/C:/Users/Marcela%20Alzate/Documents/III%20semestre/POO/ProyectoPOO/ClienteProyecto/src/Modelos/Pelicula.java</file>
             <file>file:/C:/Users/Marcela%20Alzate/Documents/III%20semestre/POO/ProyectoPOO/ClienteProyecto/src/Controladores/ControladorUsuario.java</file>

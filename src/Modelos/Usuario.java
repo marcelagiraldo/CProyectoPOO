@@ -17,14 +17,14 @@ public class Usuario {
     String cedula;
     String nombre;
     String email;
-    int aioNacimiento;
+    Long aioNacimiento;
     private LinkedList<Boleto>misBoletos;
 
     public Usuario() {
     }
     
     
-    public Usuario(String cedula, String nombre, String email, int aioNacimiento) {
+    public Usuario(String cedula, String nombre, String email, Long aioNacimiento) {
         this.cedula = cedula;
         this.nombre = nombre;
         this.email = email;
@@ -44,7 +44,7 @@ public class Usuario {
         return email;
     }
 
-    public int getAioNacimiento() {
+    public Long getAioNacimiento() {
         return aioNacimiento;
     }
 
@@ -60,7 +60,7 @@ public class Usuario {
         this.email = email;
     }
 
-    public void setAioNacimiento(int aioNacimiento) {
+    public void setAioNacimiento(Long aioNacimiento) {
         this.aioNacimiento = aioNacimiento;
     }
     

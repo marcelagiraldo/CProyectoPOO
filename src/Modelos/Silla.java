@@ -14,6 +14,9 @@ public class Silla {
     String letra;
     int numero;
 
+    public Silla() {
+    }
+    
     public Silla(String letra, int numero) {
         this.letra = letra;
         this.numero = numero;
@@ -34,4 +37,19 @@ public class Silla {
     public void setNumero(int numero) {
         this.numero = numero;
     }
+
+    /**
+     * @return the _id
+     */
+    public String getId() {
+        return _id;
+    }
+
+    /**
+     * @param _id the _id to set
+     */
+    public void setId(String _id) {
+        this._id = _id;
+    }
+    
 }

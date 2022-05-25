@@ -16,6 +16,8 @@ public class Boleto {
     double valor;
     String tipo;
     private Silla miSilla;
+    private Funcion funcion;
+    private Usuario usuario;
 
     public Boleto() {
     }
@@ -76,5 +78,34 @@ public class Boleto {
     public void setId(String _id) {
         this._id = _id;
     }
+
+    /**
+     * @return the funcion
+     */
+    public Funcion getFuncion() {
+        return funcion;
+    }
+
+    /**
+     * @param funcion the funcion to set
+     */
+    public void setFuncion(Funcion funcion) {
+        this.funcion = funcion;
+    }
+
+    /**
+     * @return the usuario
+     */
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    /**
+     * @param usuario the usuario to set
+     */
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
     
 }
