@@ -28,7 +28,8 @@ public class ControladorBoleto {
     public Boleto crear(Boleto nuevoBoleto){
         Boleto respuesta = new Boleto();
         try {
-            String resultado=this.miServicio.POST(this.subUrl, nuevoBoleto.toJSON());
+            String endPiont = this.subUrl+"/usuario/"+nuevoBoleto.getUsuario().getId()+"/funcion/"+nuevoBoleto.getFuncion().getId()+"/silla/"+nuevoBoleto.getMiSilla().getId();
+            String resultado=this.miServicio.POST(endPiont, nuevoBoleto.toJSON());
             respuesta = procesarJSON(resultado);
         } catch (Exception e) {
             System.out.println("Error: "+e);
@@ -55,7 +56,7 @@ public class ControladorBoleto {
             JSONObject boletoJS=(JSONObject)parser.parse(jsonString);
             nuevoBoleto=reArmar(boletoJS);
         } catch (Exception e) {
-            System.out.println("Error al procesar: "+e);
+            System.out.println("Error al procesar boleto: "+e);
             nuevoBoleto = null;
         }
         return nuevoBoleto;
@@ -82,8 +83,9 @@ public class ControladorBoleto {
     public Boleto actualizar(Boleto actualizado){
         Boleto respuesta=new Boleto();
         try {
-            String endPoint=this.subUrl+"/"+actualizado.getId();
-            String resultado = this.miServicio.PUT(endPoint,actualizado.toJSON());
+            String endPiont = this.subUrl+"/"+actualizado.getId()+"/funcion/"+actualizado.getFuncion().getId()+"/usuario/"+actualizado.getUsuario().getId()+"/silla/"+actualizado.getMiSilla().getId();
+            
+            String resultado = this.miServicio.PUT(endPiont,actualizado.toJSON());
             respuesta = procesarJSON(resultado);
         } catch (Exception e) {
             System.out.println("Error " + e);

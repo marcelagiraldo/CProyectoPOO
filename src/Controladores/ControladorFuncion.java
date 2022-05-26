@@ -5,6 +5,8 @@
  */
 package Controladores;
 import Modelos.Funcion;
+import Modelos.Pelicula;
+import Modelos.Sala;
 import Servicios.Servicio;
 import java.util.LinkedList;
 import org.json.simple.JSONArray;
@@ -48,6 +50,8 @@ public class ControladorFuncion {
         nuevaFuncion.setDia(((Long)objetoJS.get("dia")).intValue());
         nuevaFuncion.setMes(((Long)objetoJS.get("mes")).intValue());
         nuevaFuncion.setAio(((Long)objetoJS.get("aio")).intValue());
+        nuevaFuncion.setMiSala(reArmarSala(((JSONObject)objetoJS.get("sala"))));
+        nuevaFuncion.setMiPelicula(reArmarPelicula((JSONObject)objetoJS.get("pelicula")));
         return nuevaFuncion;
     }
     public Funcion procesarJSON(String jsonString){
@@ -62,14 +66,20 @@ public class ControladorFuncion {
         }
         return nuevaFuncion;
     }
-    public String[] funciones(LinkedList<Funcion>misFunciones){
-        String funciones[] = new String[misFunciones.size()];
-        for(int i=0;i<misFunciones.size();i++){
-            funciones[i]=misFunciones.get(i).getMiSala().getNombre()+": "+misFunciones.get(i).getMiPelicula().getNombre()+
-                    " -Hora: "+misFunciones.get(i).getHora()+" Fecha: "+misFunciones.get(i).getDia()+"-"+
-                    misFunciones.get(i).getMes()+misFunciones.get(i).getAio();
-        }
-        return funciones;
+    public Sala reArmarSala(JSONObject objetoJS){
+        Sala nuevaSala = new Sala();
+        nuevaSala.setId((String)objetoJS.get("_id"));
+        nuevaSala.setNombre((String)objetoJS.get("nombre"));
+        nuevaSala.setEfectosEspeciales((Boolean)objetoJS.get("efectosEspeciales"));
+        return nuevaSala;
+    }
+    public Pelicula reArmarPelicula(JSONObject objetoJS){
+        Pelicula nuevaPelicula = new Pelicula();
+        nuevaPelicula.setId((String)objetoJS.get("_id"));
+        nuevaPelicula.setNombre((String)objetoJS.get("nombre"));
+        nuevaPelicula.setTipo((String)objetoJS.get("tipo"));
+        nuevaPelicula.setAio(((Long)objetoJS.get("aio")).intValue());
+        return nuevaPelicula;
     }
     
 }

@@ -70,7 +70,7 @@ public class ControladorUsuario {
             JSONObject usuarioJS=(JSONObject)parser.parse(jsonString);
             nuevoUsuario=reArmar(usuarioJS);
         } catch (Exception e) {
-            System.out.println("Error al procesar: "+e);
+            System.out.println("Error al procesar usuario: "+e);
             nuevoUsuario = null;
         }
         return nuevoUsuario;

@@ -13,7 +13,9 @@ import Controladores.ControladorBoleto;
 import Modelos.Boleto;
 import Controladores.ControladorFuncion;
 import Controladores.ControladorUsuario;
+import Controladores.ControladorSilla;
 import Modelos.Funcion;
+import Modelos.Silla;
 import java.util.Arrays;
 /**
  *
@@ -23,7 +25,10 @@ public class InterfazCliente extends javax.swing.JFrame {
     ControladorBoleto miControladorBoleto;
     ControladorFuncion miConttroladorFuncion;
     ControladorUsuario miControladorUsusario;
+    ControladorSilla miControladorSilla;
     Funcion miFuncion;
+    LinkedList<Funcion>funcionesBoleto;
+    LinkedList<Silla>sillasBoleto;
     /**
      * Creates new form InterfazCliente
      */
@@ -33,9 +38,12 @@ public class InterfazCliente extends javax.swing.JFrame {
         this.miControladorBoleto=new ControladorBoleto(urlServidor, "/boletos");
         this.miConttroladorFuncion=new ControladorFuncion(urlServidor, "/funciones");
         this.miControladorUsusario=new ControladorUsuario(urlServidor, "/usuarios");
+        this.miControladorSilla = new ControladorSilla(urlServidor, "/sillas");
         actualizarTablaBoletos();
         actualizarTablaUsuarios();
         actualizarComboFuncion();
+        actualizarComboSilla();
+        
     }
     public void actualizarTablaBoletos(){
         String nombresColumnas[] = {"_Id","Nombre usuario", "Tipo", "Valor", "Función","Silla"};
@@ -47,7 +55,11 @@ public class InterfazCliente extends javax.swing.JFrame {
             fila[0]=actual.getId();
             fila[1]=actual.getUsuario().getNombre();
             fila[2] = actual.getTipo();
-            fila[3] = ""+(actual.getValor());            
+            fila[3] = ""+(actual.getValor());  
+            fila[4]=actual.getFuncion().getMiSala().getNombre()+":"+actual.getFuncion().getMiPelicula().getNombre()+"-Hora:"+
+                    (""+(actual.getFuncion().getHora()))+" Fecha:"+(""+(actual.getFuncion().getDia()))+"-"+(""+(actual.getFuncion().getMes()))+"-"+
+                    (""+(actual.getFuncion().getAio()));
+            fila[5]=actual.getMiSilla().getLetra()+(""+(actual.getMiSilla().getNumero()));
             miModelo.addRow(fila);
         }
     }
@@ -66,7 +78,20 @@ public class InterfazCliente extends javax.swing.JFrame {
         }
     }
     public void actualizarComboFuncion(){
-        this.ComboFuncion.addItem("Hola");
+        this.funcionesBoleto = this.miConttroladorFuncion.listar();
+        for(Funcion actual:this.funcionesBoleto){
+            String infoFuncion = actual.getMiSala().getNombre()+": "+actual.getMiPelicula().getNombre()+"-Hora:"+
+                    (""+(actual.getHora()))+" Fecha:"+(""+(actual.getDia()))+"-"+(""+(actual.getMes()))+"-"+
+                    (""+(actual.getAio()));
+            this.ComboFuncion.addItem(infoFuncion);
+        }
+    }
+    public void actualizarComboSilla(){
+        this.sillasBoleto = this.miControladorSilla.listar();
+        for(Silla actual:this.sillasBoleto){
+            String infoSilla = actual.getLetra()+actual.getNumero();
+            this.ComboSilla.addItem(infoSilla);
+        }
     }
     
     /**
@@ -212,10 +237,10 @@ public class InterfazCliente extends javax.swing.JFrame {
                                             .addComponent(jLabel3)
                                             .addComponent(jLabel4))
                                         .addGap(80, 80, 80)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtValorBoleto)
-                                            .addComponent(ComboFuncion, 0, 158, Short.MAX_VALUE))))
-                                .addGap(148, 148, 148)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtValorBoleto, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(ComboFuncion, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel5)
@@ -239,15 +264,15 @@ public class InterfazCliente extends javax.swing.JFrame {
                                         .addComponent(btnEliminarBoleto))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
+                        .addGap(32, 32, 32)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(256, 256, 256)
+                        .addGap(219, 219, 219)
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(139, 139, 139)
@@ -336,6 +361,10 @@ public class InterfazCliente extends javax.swing.JFrame {
         double valor = Double.parseDouble(this.txtValorBoleto.getText());
         String tipo = this.ComboTipo.getSelectedItem().toString();
         Boleto nuevoBoleto=new Boleto(valor, tipo);
+        nuevoBoleto.setUsuario(this.miControladorUsusario.buscarPorCedula(this.txtCedulaUsuario.getText()));
+        nuevoBoleto.setMiSilla(this.sillasBoleto.get(this.ComboSilla.getSelectedIndex()));
+        nuevoBoleto.setFuncion(this.funcionesBoleto.get(this.ComboFuncion.getSelectedIndex()));
+        System.out.println("Paso por aqui 2.....");
         nuevoBoleto = this.miControladorBoleto.crear(nuevoBoleto);
         
         if(nuevoBoleto==null){
@@ -366,10 +395,23 @@ public class InterfazCliente extends javax.swing.JFrame {
         String tipo = ""+ this.ComboTipo.getSelectedItem();
         Usuario usuario = this.miControladorUsusario.buscarPorCedula(this.txtCedulaUsuario.getText());
         Boleto boletoActualizar = new Boleto(valor, tipo);
+        boletoActualizar.setId(this.txtIdBoleto.getText());
+        boletoActualizar.setUsuario(usuario);
+        boletoActualizar.setMiSilla(this.sillasBoleto.get(this.ComboSilla.getSelectedIndex()));
+        boletoActualizar.setFuncion(this.funcionesBoleto.get(this.ComboFuncion.getSelectedIndex()));
         Boleto actualizado = this.miControladorBoleto.actualizar(boletoActualizar);
-        this.txtValorBoleto.setText(""+actualizado.getValor());
-        this.txtCedulaUsuario.setText(actualizado.getUsuario().getCedula());
+        if(actualizado!=null){
+            actualizado.setValor(Double.parseDouble(this.txtValorBoleto.getText()));
+            actualizado.setTipo(""+this.ComboTipo.getSelectedIndex());
+            actualizado.setFuncion(this.funcionesBoleto.get(this.ComboFuncion.getSelectedIndex()));
+            actualizado.setMiSilla(this.sillasBoleto.get(this.ComboSilla.getSelectedIndex()));
+            actualizado.setUsuario(this.miControladorUsusario.buscarPorCedula(this.txtCedulaUsuario.getText()));
+            JOptionPane.showMessageDialog(null, "Exito");
+        }else{
+            JOptionPane.showMessageDialog(null, "Error");
+        }
         actualizarTablaBoletos();
+        limpiarCampos();
     }//GEN-LAST:event_btnEditarBoletoActionPerformed
 
     private void btnEliminarBoletoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarBoletoActionPerformed
@@ -378,6 +420,7 @@ public class InterfazCliente extends javax.swing.JFrame {
         this.miControladorBoleto.eliminar(id);
         JOptionPane.showMessageDialog(null, "Eliminado");
         actualizarTablaBoletos();
+        limpiarCampos();
     }//GEN-LAST:event_btnEliminarBoletoActionPerformed
     public void limpiarCampos(){
         this.txtValorBoleto.setText("");

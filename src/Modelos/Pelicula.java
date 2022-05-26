@@ -18,6 +18,10 @@ public class Pelicula {
     String tipo;
     private LinkedList<Funcion>misFunciones;
 
+    public Pelicula() {
+    }
+    
+
     public Pelicula(String nombre, int aio, String tipo) {
         this.nombre = nombre;
         this.aio = aio;
@@ -62,5 +66,20 @@ public class Pelicula {
     public void setMisFunciones(LinkedList<Funcion> misFunciones) {
         this.misFunciones = misFunciones;
     }
+
+    /**
+     * @return the _id
+     */
+    public String getId() {
+        return _id;
+    }
+
+    /**
+     * @param _id the _id to set
+     */
+    public void setId(String _id) {
+        this._id = _id;
+    }
+    
     
 }

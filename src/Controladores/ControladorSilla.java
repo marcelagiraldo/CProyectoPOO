@@ -8,7 +8,10 @@ package Controladores;
 import Modelos.Funcion;
 import Modelos.Silla;
 import Servicios.Servicio;
+import java.util.LinkedList;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -22,12 +25,31 @@ public class ControladorSilla {
         this.miServicio = new Servicio(server);
         this.subUrl = subUrl;
     }
+    public LinkedList<Silla>listar(){
+        LinkedList<Silla>sillas = new LinkedList<>();
+        try {
+            String endPoint = this.subUrl;
+            String resultado = this.miServicio.GET(endPoint);
+            JSONParser parser = new JSONParser();
+            JSONArray sillasJS = (JSONArray) parser.parse(resultado);
+            for (Object actual : sillasJS) {
+                JSONObject sillaJS= (JSONObject) actual;
+                Silla nuevaSilla=new Silla();
+                nuevaSilla=reArmar(sillaJS);
+                sillas.add(nuevaSilla);
+            }
+        } catch (Exception e) {
+            System.out.println("Error " + e);
+            sillas = null;
+        }
+        return sillas;
+    }
     
     public Silla reArmar(JSONObject objetoJS){
         Silla nuevaSilla = new Silla();
         nuevaSilla.setId((String)objetoJS.get("_id"));
         nuevaSilla.setLetra((String)objetoJS.get("letra"));
-        nuevaSilla.setNumero(((Long)objetoJS.get("nuemero")).intValue());
+        nuevaSilla.setNumero(((Long)objetoJS.get("numero")).intValue());
         return nuevaSilla;
     }
 }

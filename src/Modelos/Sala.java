@@ -18,6 +18,10 @@ public class Sala {
     private LinkedList<Silla>misSillas;
     private LinkedList<Funcion>misFunciones;
 
+    public Sala() {
+    }
+    
+
     public Sala(String nombre, boolean efectosEspeciales) {
         this.nombre = nombre;
         this.efectosEspeciales = efectosEspeciales;
@@ -67,6 +71,20 @@ public class Sala {
      */
     public void setMisFunciones(LinkedList<Funcion> misFunciones) {
         this.misFunciones = misFunciones;
+    }
+
+    /**
+     * @return the _id
+     */
+    public String getId() {
+        return _id;
+    }
+
+    /**
+     * @param _id the _id to set
+     */
+    public void setId(String _id) {
+        this._id = _id;
     }
     
 }
