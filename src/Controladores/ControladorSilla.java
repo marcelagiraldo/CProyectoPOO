@@ -44,6 +44,25 @@ public class ControladorSilla {
         }
         return sillas;
     }
+    public LinkedList<Silla>listarPorSala(String idSala){
+        LinkedList<Silla>sillasSala = new LinkedList<>();
+        try {
+            String endPoint = this.subUrl+"/sala/"+idSala;
+            String resultado = this.miServicio.GET(endPoint);
+            JSONParser parser = new JSONParser();
+            JSONArray sillasJS = (JSONArray)parser.parse(resultado);
+            for(Object actual : sillasJS){
+                JSONObject sillaJS= (JSONObject) actual;
+                Silla nuevaSilla = new Silla();
+                nuevaSilla = reArmar(sillaJS);
+                sillasSala.add(nuevaSilla);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al lsitar por sala: "+e);
+            sillasSala = null;
+        }
+        return sillasSala;
+    }
     
     public Silla reArmar(JSONObject objetoJS){
         Silla nuevaSilla = new Silla();

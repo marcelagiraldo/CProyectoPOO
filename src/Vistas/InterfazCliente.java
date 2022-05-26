@@ -15,8 +15,11 @@ import Controladores.ControladorFuncion;
 import Controladores.ControladorUsuario;
 import Controladores.ControladorSilla;
 import Modelos.Funcion;
+import Modelos.Sala;
 import Modelos.Silla;
+import java.awt.event.ItemEvent;
 import java.util.Arrays;
+import javax.swing.text.TextAction;
 /**
  *
  * @author Marcela Alzate
@@ -27,6 +30,7 @@ public class InterfazCliente extends javax.swing.JFrame {
     ControladorUsuario miControladorUsusario;
     ControladorSilla miControladorSilla;
     Funcion miFuncion;
+    int i;
     LinkedList<Funcion>funcionesBoleto;
     LinkedList<Silla>sillasBoleto;
     /**
@@ -87,10 +91,12 @@ public class InterfazCliente extends javax.swing.JFrame {
         }
     }
     public void actualizarComboSilla(){
-        this.sillasBoleto = this.miControladorSilla.listar();
-        for(Silla actual:this.sillasBoleto){
-            String infoSilla = actual.getLetra()+actual.getNumero();
-            this.ComboSilla.addItem(infoSilla);
+        this.ComboSilla.removeAllItems();
+        Funcion auxF = this.funcionesBoleto.get(this.i);
+        Sala auxS = auxF.getMiSala();
+        this.sillasBoleto = this.miControladorSilla.listarPorSala(auxS.getId());
+        for (Silla actual : this.sillasBoleto){
+            this.ComboSilla.addItem(actual.getLetra()+actual.getNumero());
         }
     }
     
@@ -150,6 +156,11 @@ public class InterfazCliente extends javax.swing.JFrame {
 
         ComboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Niño", "Adulto" }));
 
+        ComboFuncion.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ComboFuncionItemStateChanged(evt);
+            }
+        });
         ComboFuncion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ComboFuncionActionPerformed(evt);
@@ -367,6 +378,7 @@ public class InterfazCliente extends javax.swing.JFrame {
         System.out.println("Paso por aqui 2.....");
         nuevoBoleto = this.miControladorBoleto.crear(nuevoBoleto);
         
+        
         if(nuevoBoleto==null){
             JOptionPane.showMessageDialog(null, "Problemas al crear el boleto");
         }else{
@@ -400,16 +412,7 @@ public class InterfazCliente extends javax.swing.JFrame {
         boletoActualizar.setMiSilla(this.sillasBoleto.get(this.ComboSilla.getSelectedIndex()));
         boletoActualizar.setFuncion(this.funcionesBoleto.get(this.ComboFuncion.getSelectedIndex()));
         Boleto actualizado = this.miControladorBoleto.actualizar(boletoActualizar);
-        if(actualizado!=null){
-            actualizado.setValor(Double.parseDouble(this.txtValorBoleto.getText()));
-            actualizado.setTipo(""+this.ComboTipo.getSelectedIndex());
-            actualizado.setFuncion(this.funcionesBoleto.get(this.ComboFuncion.getSelectedIndex()));
-            actualizado.setMiSilla(this.sillasBoleto.get(this.ComboSilla.getSelectedIndex()));
-            actualizado.setUsuario(this.miControladorUsusario.buscarPorCedula(this.txtCedulaUsuario.getText()));
-            JOptionPane.showMessageDialog(null, "Exito");
-        }else{
-            JOptionPane.showMessageDialog(null, "Error");
-        }
+        
         actualizarTablaBoletos();
         limpiarCampos();
     }//GEN-LAST:event_btnEditarBoletoActionPerformed
@@ -422,6 +425,16 @@ public class InterfazCliente extends javax.swing.JFrame {
         actualizarTablaBoletos();
         limpiarCampos();
     }//GEN-LAST:event_btnEliminarBoletoActionPerformed
+
+    private void ComboFuncionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ComboFuncionItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED){
+            if(!this.ComboFuncion.getSelectedItem().equals("elige uno...")){
+                this.i = this.ComboFuncion.getSelectedIndex();
+                this.actualizarComboSilla();
+            }
+        }
+    }//GEN-LAST:event_ComboFuncionItemStateChanged
     public void limpiarCampos(){
         this.txtValorBoleto.setText("");
         this.txtCedulaUsuario.setText("");
